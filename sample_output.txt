@@ -1,0 +1,16 @@
+PS C:\Users\zen\Desktop\zapder\RA2311026010855> python notifications.py
+Warning: Failed to fetch from API: 401 Client Error: Unauthorized for url: http://20.207.122.201/evaluation-service/notifications
+Using mock data (API unavailable or no data returned)
+
+Top 10 Priority Notifications (highest first):
+--------------------------------------------------------------------------------
+ 1. [Weight:3] PLACEMENT   | 2023-11-15 04:11:20 | Notification 28 (placement)
+ 2. [Weight:3] PLACEMENT   | 2023-11-15 04:08:20 | Notification 25 (placement)
+ 3. [Weight:3] PLACEMENT   | 2023-11-15 04:05:20 | Notification 22 (placement)
+ 4. [Weight:3] PLACEMENT   | 2023-11-15 04:02:20 | Notification 19 (placement)
+ 5. [Weight:3] PLACEMENT   | 2023-11-15 03:59:20 | Notification 16 (placement)
+ 6. [Weight:3] PLACEMENT   | 2023-11-15 03:56:20 | Notification 13 (placement)
+ 7. [Weight:3] PLACEMENT   | 2023-11-15 03:53:20 | Notification 10 (placement)
+ 8. [Weight:3] PLACEMENT   | 2023-11-15 03:50:20 | Notification 7 (placement)
+ 9. [Weight:3] PLACEMENT   | 2023-11-15 03:47:20 | Notification 4 (placement)
+10. [Weight:3] PLACEMENT   | 2023-11-15 03:44:20 | Notification 1 (placement)
