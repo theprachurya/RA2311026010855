@@ -1,0 +1,9 @@
+.gitignore
+test.json
+logic.java
+authentication.json
+client_id_req.json
+logic.py
+logic.java
+notification_app_fe/node_modules/
+notification_app_fe/.next/
