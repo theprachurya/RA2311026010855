@@ -30,12 +30,10 @@ class TopNTracker:
         if len(self.heap) < self.n:
             heapq.heappush(self.heap, key)
         else:
-            # If incoming is greater than the smallest in heap, replace
             if key > self.heap[0]:
                 heapq.heapreplace(self.heap, key)
 
     def top_n(self) -> List[Notification]:
-        # Return top notifications sorted by (weight desc, timestamp desc)
         items = [entry[3] for entry in self.heap]
         return sorted(items, key=lambda x: (WEIGHT.get(x.type.lower(), 0), x.timestamp), reverse=True)
 
@@ -90,13 +88,10 @@ def main():
     api_url = "http://20.207.122.201/evaluation-service/notifications"
     token = load_auth_token()
     
-    # Try to fetch real data from API
     notifications = []
     if token:
         api_data = fetch_notifications_from_api(api_url, token)
         if api_data:
-            # Convert API response to Notification objects
-            # API keys are capitalized: ID, Type, Message, Timestamp
             for item in api_data:
                 notif = Notification(
                     id=item.get('ID', str(len(notifications))),
@@ -106,14 +101,12 @@ def main():
                 )
                 notifications.append(notif)
     
-    # Fall back to mock data if no real data available
     if not notifications:
         print("Using mock data (API unavailable or no data returned)")
         notifications = get_mock_notifications()
     else:
         print(f"Fetched {len(notifications)} notifications from API")
     
-    # Process through top-n tracker
     tracker = TopNTracker(n=10)
     for notif in notifications:
         tracker.push(notif)
