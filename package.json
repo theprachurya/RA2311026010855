@@ -1,0 +1,9 @@
+{
+  "name": "campus-notification-logging-middleware",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node notification_app_be/server.js",
+    "demo": "node notification_app_be/server.js"
+  }
+}
