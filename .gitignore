@@ -7,3 +7,10 @@ logic.py
 logic.java
 notification_app_fe/node_modules/
 notification_app_fe/.next/
+node_modules/
+venv/
+.env
+.DS_Store
+*.log
+coverage/
+venv/
