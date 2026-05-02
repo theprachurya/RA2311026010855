@@ -14,18 +14,18 @@ WEIGHT = {
 
 @dataclass
 class Notification:
-    id: int
-    type: str  # placement/result/event
-    timestamp: int  # unix seconds
+    id: str
+    type: str  
+    timestamp: int  
     message: str
 
 class TopNTracker:
     def __init__(self, n: int = 10):
         self.n = n
-        self.heap = []  # min-heap of (weight, timestamp, id, notification)
+        self.heap = []  
 
     def push(self, notif: Notification):
-        w = WEIGHT.get(notif.type, 0)
+        w = WEIGHT.get(notif.type.lower(), 0)
         key = (w, notif.timestamp, notif.id, notif)
         if len(self.heap) < self.n:
             heapq.heappush(self.heap, key)
@@ -37,7 +37,7 @@ class TopNTracker:
     def top_n(self) -> List[Notification]:
         # Return top notifications sorted by (weight desc, timestamp desc)
         items = [entry[3] for entry in self.heap]
-        return sorted(items, key=lambda x: (WEIGHT[x.type], x.timestamp), reverse=True)
+        return sorted(items, key=lambda x: (WEIGHT.get(x.type.lower(), 0), x.timestamp), reverse=True)
 
 
 def fetch_notifications_from_api(api_url: str, token: str) -> Optional[List[dict]]:
@@ -72,8 +72,18 @@ def get_mock_notifications() -> List[Notification]:
     notifs = []
     for i in range(1, 31):
         t = types[(i-1) % 3]
-        notifs.append(Notification(id=i, type=t, timestamp=base_ts + i*60, message=f"Notification {i} ({t})"))
+        notifs.append(Notification(id=str(i), type=t, timestamp=base_ts + i*60, message=f"Notification {i} ({t})"))
     return notifs
+
+
+def parse_timestamp_to_unix(ts_string: str) -> int:
+    """Parse timestamp string '2026-05-02 00:04:21' to unix timestamp."""
+    try:
+        dt = datetime.strptime(ts_string, "%Y-%m-%d %H:%M:%S")
+        return int(dt.timestamp())
+    except Exception as e:
+        print(f"Warning: Could not parse timestamp '{ts_string}': {e}")
+        return 0
 
 
 def main():
@@ -86,12 +96,13 @@ def main():
         api_data = fetch_notifications_from_api(api_url, token)
         if api_data:
             # Convert API response to Notification objects
+            # API keys are capitalized: ID, Type, Message, Timestamp
             for item in api_data:
                 notif = Notification(
-                    id=item.get('id', 0),
-                    type=item.get('type', 'event').lower(),
-                    timestamp=int(item.get('timestamp', 0)) if isinstance(item.get('timestamp'), (int, str)) else 0,
-                    message=item.get('message', '')
+                    id=item.get('ID', str(len(notifications))),
+                    type=item.get('Type', 'Event').lower(),
+                    timestamp=parse_timestamp_to_unix(item.get('Timestamp', '')),
+                    message=item.get('Message', '')
                 )
                 notifications.append(notif)
     
@@ -109,10 +120,10 @@ def main():
     
     top = tracker.top_n()
     print("\nTop 10 Priority Notifications (highest first):")
-    print("-" * 80)
+    print("-" * 100)
     for idx, n in enumerate(top, 1):
         ts_str = datetime.fromtimestamp(n.timestamp).strftime('%Y-%m-%d %H:%M:%S')
-        weight = WEIGHT.get(n.type, 0)
+        weight = WEIGHT.get(n.type.lower(), 0)
         print(f"{idx:2}. [Weight:{weight}] {n.type.upper():11} | {ts_str} | {n.message}")
 
 

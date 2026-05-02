@@ -18,7 +18,9 @@ Users lose track of important notifications due to high volume. Introduce a "Pri
 ### API Integration
 - **Endpoint**: `http://20.207.122.201/evaluation-service/notifications` (GET)
 - **Auth**: Bearer token from `authentication.json`
-- **Fallback**: If API unavailable or returns 401/no data, uses deterministic mock stream of 30 notifications for demo/testing purposes.
+- **Response format**: JSON with `notifications` array containing objects with capitalized keys: `ID`, `Type`, `Message`, `Timestamp`
+- **Timestamp format**: `"2026-05-02 00:04:21"` (parsed to Unix timestamp for sorting)
+- **Fallback**: If API unavailable or returns error, uses deterministic mock stream of 30 notifications for demo/testing.
 
 ## Why a min-heap (size n)?
 - For streaming data (notifications keep arriving), a fixed-size min-heap is the most efficient structure to maintain the top-n elements.
